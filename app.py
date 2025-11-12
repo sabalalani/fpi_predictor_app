@@ -13,7 +13,24 @@ from scipy import ndimage
 from skimage import morphology, measure
 # ---- Safe compatibility patch for scikit-learn ----
 import sklearn.utils
+# Patch sklearn.utils._tags._safe_tags if missing
+try:
+    from sklearn.utils._tags import _safe_tags
+except (ImportError, AttributeError):
+    # Define a fallback version of _safe_tags
+    def _safe_tags(estimator, key=None, fallback=None):
+        """Fallback safe_tags for newer sklearn versions."""
+        if hasattr(estimator, "_get_tags"):
+            tags = estimator._get_tags()
+        else:
+            tags = {}
+        return tags if key is None else tags.get(key, fallback)
 
+    # Recreate sklearn.utils._tags module if needed
+    import sys
+    if 'sklearn.utils._tags' not in sys.modules:
+        sys.modules['sklearn.utils._tags'] = types.ModuleType('sklearn.utils._tags')
+    sys.modules['sklearn.utils._tags']._safe_tags = _safe_tags
 # Define stubs for deprecated private functions if needed
 def _noop(*args, **kwargs):
     return None
