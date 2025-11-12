@@ -16,8 +16,16 @@ try:
     from sklearn.compose._column_transformer import _get_column_indices
 except ImportError:
     from sklearn.utils import _get_column_indices
+
+try:
+    # sklearn >= 1.6 moved this as well
+    from sklearn.utils._estimator_html_repr import _print_elapsed_time
+except ImportError:
+    from sklearn.utils import _print_elapsed_time
+    
 import sklearn.utils
 sklearn.utils._get_column_indices = _get_column_indices
+sklearn.utils._print_elapsed_time = _print_elapsed_time
 # ------------------------------------------------------
 
 # ============== CONFIGURATION ==============
