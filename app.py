@@ -11,19 +11,30 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import ndimage
 from skimage import morphology, measure
-# ---- Compatibility patch for scikit-learn >= 1.6 ----
+# ---- Safe compatibility patch for scikit-learn ----
+import sklearn.utils
+
+# Define stubs for deprecated private functions if needed
+def _noop(*args, **kwargs):
+    return None
+
+# Try to import _get_column_indices (only if really required by your model)
 try:
     from sklearn.compose._column_transformer import _get_column_indices
 except ImportError:
-    from sklearn.utils import _get_column_indices
+    def _get_column_indices(*args, **kwargs):
+        raise ImportError(
+            "_get_column_indices is not available in this scikit-learn version. "
+            "Please update your model or preprocessing pipeline."
+        )
 
+# _print_elapsed_time was only used internally for timing, safe to stub
 try:
-    # sklearn >= 1.6 moved this as well
     from sklearn.utils._estimator_html_repr import _print_elapsed_time
 except ImportError:
-    from sklearn.utils import _print_elapsed_time
-    
-import sklearn.utils
+    _print_elapsed_time = _noop
+
+# Assign for backward compatibility
 sklearn.utils._get_column_indices = _get_column_indices
 sklearn.utils._print_elapsed_time = _print_elapsed_time
 # ------------------------------------------------------
