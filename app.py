@@ -11,6 +11,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import ndimage
 from skimage import morphology, measure
+# ---- Compatibility patch for scikit-learn >= 1.6 ----
+try:
+    from sklearn.compose._column_transformer import _get_column_indices
+except ImportError:
+    from sklearn.utils import _get_column_indices
+import sklearn.utils
+sklearn.utils._get_column_indices = _get_column_indices
+# ------------------------------------------------------
 
 # ============== CONFIGURATION ==============
 
