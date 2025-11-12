@@ -586,22 +586,22 @@ class FPIAnalyzer:
 
 
 # ============== PASSWORD PROTECTION ==============
-def check_password():
-    if "password_correct" not in st.session_state:
-        st.session_state["password_correct"] = False
+#def check_password():
+#    if "password_correct" not in st.session_state:
+#        st.session_state["password_correct"] = False
 
-    if not st.session_state["password_correct"]:
-        st.title("🔒 FPI Analyzer - Private Access")
-        password = st.text_input("Enter access password:", type="password")
-        if st.button("Submit"):
-            # FIXED: Only accept the actual secret password, not "default123"
-            if "APP_PASSWORD" in st.secrets and password == st.secrets["APP_PASSWORD"]:
-                st.session_state["password_correct"] = True
-                st.rerun()
-            else:
-                st.error("Incorrect password")
-        st.stop()
-    return True
+#    if not st.session_state["password_correct"]:
+#        st.title("🔒 FPI Analyzer - Private Access")
+#        password = st.text_input("Enter access password:", type="password")
+#        if st.button("Submit"):
+#            # FIXED: Only accept the actual secret password, not "default123"
+#            if "APP_PASSWORD" in st.secrets and password == st.secrets["APP_PASSWORD"]:
+#                st.session_state["password_correct"] = True
+#                st.rerun()
+#            else:
+#                st.error("Incorrect password")
+#        st.stop()
+#    return True
 
 
 # ============== STREAMLIT APP ==============
@@ -892,5 +892,5 @@ def main():
 
 
 if __name__ == "__main__":
-    if check_password():
-        main()
+   # if check_password():
+    main()
